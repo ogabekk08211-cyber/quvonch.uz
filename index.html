@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHONEHUB — Telefonlar do‘koni</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#4385ff;--bg:#080d19;--card:#111a2c;--muted:#9aa8bd}
+body{
+  font-family:Arial,sans-serif;background:var(--bg);color:white;
+  background-image:radial-gradient(ellipse at top left,#182b53 0,transparent 45%),
+  radial-gradient(ellipse at top right,#26143e 0,transparent 35%);
+}
+header{
+  position:sticky;top:0;z-index:10;background:#080d19ed;
+  backdrop-filter:blur(18px);border-bottom:1px solid #29354a;
+  padding:17px 6%;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;flex-wrap:wrap
+}
+.logo{font-size:25px;font-weight:900;color:#69a2ff}
+.logo span{color:white}
+nav{display:flex;gap:22px;flex-wrap:wrap}
+nav a{color:#d7e1f2;text-decoration:none;font-size:14px}
+nav a:hover{color:#69a2ff}
+button,select,input{font:inherit}
+button{cursor:pointer;border:0}
+.btn{background:var(--blue);color:white;padding:12px 17px;
+  border-radius:11px;font-weight:bold}
+.btn:hover{background:#2869e7;transform:translateY(-1px)}
+.container{width:90%;max-width:1250px;margin:auto}
+.hero{
+  display:grid;grid-template-columns:1.1fr .9fr;align-items:center;
+  gap:35px;padding:65px 0 45px;min-height:400px
+}
+.tag{color:#78aaff;background:#1b2d4d;border:1px solid #304b76;
+  padding:9px 13px;border-radius:30px;display:inline-block;font-size:13px}
+h1{font-size:clamp(36px,5vw,61px);line-height:1.12;margin:22px 0}
+h1 span{color:#6da2ff}
+.hero p{color:#b5c1d4;line-height:1.8;max-width:500px}
+.hero-actions{display:flex;gap:12px;margin-top:25px;flex-wrap:wrap}
+.btn-outline{padding:12px 17px;border-radius:11px;color:white;
+  background:#152036;border:1px solid #364763}
+.hero-image{
+  border:1px solid #334463;border-radius:28px;overflow:hidden;
+  background:linear-gradient(135deg,#1a2c4a,#17122b);
+  min-height:300px;display:flex;align-items:center;justify-content:center;
+  padding:20px
+}
+.hero-image img{width:100%;height:320px;object-fit:contain;
+  filter:drop-shadow(0 20px 30px #0008)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;
+  margin:15px 0 55px}
+.feature{background:#111a2c;border:1px solid #293750;
+  border-radius:16px;padding:20px}
+.feature strong{display:block;margin-bottom:8px}
+.feature p{font-size:13px;color:var(--muted);line-height:1.6}
+section{scroll-margin-top:95px}
+.section-title{font-size:29px;margin-bottom:10px}
+.section-sub{color:var(--muted);margin-bottom:25px;line-height:1.6}
+.categories{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.cat{background:#121c30;color:#dce7fa;border:1px solid #2b3b57;
+  padding:11px 17px;border-radius:25px}
+.cat.active,.cat:hover{background:#3479f6;color:white;border-color:#3479f6}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:25px}
+.toolbar input,.toolbar select,.order-form input,.order-form textarea{
+  background:#111a2c;border:1px solid #34435c;color:white;
+  padding:13px;border-radius:10px;outline:none;min-width:0
+}
+.toolbar input{flex:1;min-width:180px}
+.toolbar select{min-width:175px}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.product{background:linear-gradient(145deg,#131e32,#0e1524);
+  border:1px solid #283750;border-radius:18px;overflow:hidden;
+  transition:.25s;position:relative}
+.product:hover{transform:translateY(-5px);border-color:#568cff}
+.product-img{height:215px;background:#e9edf4;display:flex;
+  justify-content:center;align-items:center;overflow:hidden;padding:10px}
+.product-img img{width:100%;height:100%;object-fit:contain;
+  mix-blend-mode:multiply;transition:.3s}
+.product:hover .product-img img{transform:scale(1.06)}
+.product-info{padding:17px}
+.brand{color:#78aaff;font-size:12px;text-transform:uppercase;
+  letter-spacing:1px}
+.product h3{font-size:17px;margin:9px 0}
+.spec{color:var(--muted);font-size:13px;line-height:1.7}
+.price{font-size:19px;font-weight:bold;margin:15px 0}
+.old-price{font-size:12px;color:#8390a4;text-decoration:line-through;
+  margin-left:7px}
+.product-actions{display:flex;gap:8px}
+.product-actions button{flex:1;padding:11px 7px;border-radius:9px;
+  font-size:12px;font-weight:bold}
+.add{background:#397cf4;color:white}
+.details{background:#202d43;color:white}
+.badge{position:absolute;top:12px;left:12px;z-index:1;
+  background:#2e7cfc;padding:6px 9px;border-radius:7px;font-size:11px}
+.empty{grid-column:1/-1;text-align:center;padding:45px;color:var(--muted)}
+.promo{margin:55px 0;background:linear-gradient(110deg,#193c79,#3e286c);
+  border-radius:22px;padding:35px;display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap}
+.promo h2{margin-bottom:10px}
+.promo p{color:#d6e3ff;line-height:1.6}
+footer{border-top:1px solid #283750;margin-top:65px;padding:35px 0;
+  color:var(--muted);font-size:13px;line-height:2}
+.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cart-panel{position:fixed;inset:0;z-index:30;display:none;
+  background:#0009;justify-content:flex-end}
+.cart-panel.open{display:flex}
+.cart{width:min(440px,100%);background:#0d1525;height:100%;
+  overflow:auto;padding:24px;border-left:1px solid #33435d}
+.cart-head{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:22px}
+.close{background:#23314a;color:white;padding:9px 13px;border-radius:8px}
+.cart-item{display:flex;justify-content:space-between;gap:12px;
+  border-bottom:1px solid #2b3850;padding:16px 0}
+.cart-item p{color:var(--muted);font-size:13px;margin-top:7px}
+.qty{display:flex;align-items:center;gap:9px;margin-top:10px}
+.qty button{background:#233958;color:white;padding:5px 10px;border-radius:5px}
+.total{font-size:21px;font-weight:bold;margin:25px 0}
+.order-form{display:grid;gap:12px;margin-top:20px}
+.order-form input,.order-form textarea{width:100%}
+.order-form textarea{min-height:85px;resize:vertical}
+.note{font-size:12px;color:#9eacc2;line-height:1.6}
+dialog{background:#101a2c;color:white;border:1px solid #40516d;
+  border-radius:18px;padding:25px;width:min(440px,90%);
+  margin:auto}
+dialog::backdrop{background:#000b}
+dialog h2{margin:12px 0}
+dialog p{color:#c2ccdc;line-height:1.7;margin-bottom:15px}
+@media(max-width:950px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){
+  .hero{grid-template-columns:1fr;padding-top:40px}
+  .hero-image{min-height:230px}
+  .hero-image img{height:230px}
+  .features{grid-template-columns:1fr}
+  .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .product-img{height:160px}
+  .product-info{padding:12px}
+  .product h3{font-size:14px}
+  .price{font-size:15px}
+  .product-actions{flex-direction:column}
+  header{padding:14px 5%}
+  nav{gap:12px}
+  .container{width:92%}
+}
+@media(max-width:360px){.products{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+<header>
+  <a href="#" class="logo" style="text-decoration:none">PHONE<span>HUB</span></a>
+  <nav>
+    <a href="#">Bosh sahifa</a>
+    <a href="#catalog">Telefonlar</a>
+    <a href="#advantages">Afzalliklar</a>
+    <a href="#contact">Aloqa</a>
+  </nav>
+  <button class="btn" onclick="openCart()">🛒 Savatcha (<span id="cartCount">0</span>)</button>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <span class="tag">✦ Yangi avlod smartfonlari</span>
+      <h1>Texnologiya bilan <span>bir qadam oldinda.</span></h1>
+      <p>Eng ommabop smartfonlarni kashf eting. O‘zingizga mos telefonni tanlang va onlayn buyurtma bering.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#catalog" style="text-decoration:none">Katalogni ko‘rish →</a>
+        <button class="btn-outline" onclick="showPopular()">Mashhur modellar</button>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=900&q=85"
+           alt="Zamonaviy smartfon"
+           onerror="this.src='https://placehold.co/500x400/e9edf4/111827?text=Smartphone'">
+    </div>
+  </section>
+
+  <section class="features" id="advantages">
+    <div class="feature"><strong>🚚 Qulay buyurtma</strong><p>Telefonni tanlang va yetkazib berish ma’lumotlarini yuboring.</p></div>
+    <div class="feature"><strong>📱 Keng tanlov</strong><p>Turli brendlar va narx toifalaridagi smartfonlar.</p></div>
+    <div class="feature"><strong>🔒 Xavfsiz aloqa</strong><p>Buyurtmangizni do‘kon bilan bog‘lanib tasdiqlang.</p></div>
+  </section>
+
+  <section id="catalog">
+    <h2 class="section-title">Smartfonlar katalogi</h2>
+    <p class="section-sub">O‘zingizga mos telefonni toping va savatchaga qo‘shing.</p>
+
+    <div class="categories" id="categories"></div>
+
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="🔍 Telefon nomini qidiring..." oninput="renderProducts()">
+      <select id="sort" onchange="renderProducts()">
+        <option value="default">Saralash: odatiy</option>
+        <option value="low">Avval arzonlari</option>
+        <option value="high">Avval qimmatlari</option>
+        <option value="name">Nomi bo‘yicha</option>
+      </select>
+    </div>
+
+    <div class="products" id="products"></div>
+  </section>
+
+  <section class="promo">
+    <div><h2>O‘zingizga mos smartfonni tanlang!</h2>
+      <p>Katalogni ko‘ring, mahsulotni savatchaga qo‘shing va buyurtma yuboring.</p></div>
+    <a href="#catalog" class="btn" style="text-decoration:none">Xarid qilish →</a>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="container footer-row">
+    <div><a class="logo" href="#" style="text-decoration:none">PHONEHUB</a>
+      <p>Smartfonlar olamiga xush kelibsiz.</p></div>
+    <div><strong style="color:white">Aloqa</strong>
+      <p>Telefon: +998 XX XXX XX XX</p>
+      <p>Telegram: @username</p></div>
+    <div><strong style="color:white">Ish vaqti</strong>
+      <p>Har kuni: 09:00 – 21:00</p>
+      <p>© 2026 PHONEHUB</p></div>
+  </div>
+</footer>
+
+<div class="cart-panel" id="cartPanel" onclick="if(event.target===this)closeCart()">
+  <div class="cart">
+    <div class="cart-head"><h2>🛒 Savatcha</h2>
+      <button class="close" onclick="closeCart()">✕</button></div>
+    <div id="cartItems"></div>
+    <div class="total">Jami: <span id="total">0</span> so‘m</div>
+    <h3>Buyurtma ma’lumotlari</h3>
+    <form class="order-form" id="orderForm">
+      <input name="name" placeholder="Ismingiz" required>
+      <input name="phone" type="tel" placeholder="+998 XX XXX XX XX" required>
+      <textarea name="address" placeholder="Yetkazib berish manzili" required></textarea>
+      <button class="btn" type="submit">Buyurtma yuborish</button>
+      <p class="note">Buyurtma yuborilganda xabar tayyorlanadi. Haqiqiy buyurtmalarni qabul qilish uchun saytga Telegram bot yoki server ulash kerak.</p>
+    </form>
+  </div>
+</div>
+
+<dialog id="detailDialog">
+  <button class="close" style="float:right" onclick="detailDialog.close()">✕</button>
+  <div id="detailContent"></div>
+</dialog>
+
+<script>
+const productsData = [
+ {id:1,name:"iPhone 16 Pro",brand:"iPhone",price:15990000,storage:"256 GB",ram:"8 GB",tag:"Premium",img:"https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=700&q=80"},
+ {id:2,name:"iPhone 15",brand:"iPhone",price:9990000,storage:"128 GB",ram:"6 GB",tag:"Mashhur",img:"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=700&q=80"},
+ {id:3,name:"Samsung Galaxy S25",brand:"Samsung",price:12990000,storage:"256 GB",ram:"12 GB",tag:"Yangi",img:"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=700&q=80"},
+ {id:4,name:"Samsung Galaxy A56",brand:"Samsung",price:5490000,storage:"256 GB",ram:"8 GB",tag:"",img:"https://images.unsplash.com/photo-1603891128711-11b4b03bb138?auto=format&fit=crop&w=700&q=80"},
+ {id:5,name:"Redmi Note 14",brand:"Redmi",price:2290000,storage:"128 GB",ram:"6 GB",tag:"Hamyonbop",img:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=700&q=80"},
+ {id:6,name:"Xiaomi 14T",brand:"Xiaomi",price:5990000,storage:"256 GB",ram:"12 GB",tag:"",img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80"},
+ {id:7,name:"Honor X9c",brand:"Honor",price:3990000,storage:"256 GB",ram:"8 GB",tag:"",img:"https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=700&q=80"},
+ {id:8,name:"Tecno Camon 30",brand:"Tecno",price:2690000,storage:"256 GB",ram:"8 GB",tag:"",img:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80"},
+ {id:9,name:"Infinix Note 40",brand:"Infinix",price:2490000,storage:"256 GB",ram:"8 GB",tag:"",img:"https://images.unsplash.com/photo-1605236453806-6ff36851218e?auto=format&fit=crop&w=700&q=80"},
+ {id:10,name:"OPPO Reno 12",brand:"OPPO",price:4690000,storage:"256 GB",ram:"12 GB",tag:"",img:"https://images.unsplash.com/photo-1598327106026-d9521da673d1?auto=format&fit=crop&w=700&q=80"},
+ {id:11,name:"Vivo V40",brand:"Vivo",price:5290000,storage:"256 GB",ram:"12 GB",tag:"",img:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=700&q=80"},
+ {id:12,name:"Google Pixel 9",brand:"Google",price:8990000,storage:"128 GB",ram:"12 GB",tag:"",img:"https://images.unsplash.com/photo-1605236453806-6ff36851218e?auto=format&fit=crop&w=700&q=80"}
+];
+
+const brands=["Barchasi","iPhone","Samsung","Redmi","Xiaomi","Honor","Tecno","Infinix","OPPO","Vivo","Google"];
+let activeBrand="Barchasi";
+let cart={};
+
+const money=n=>new Intl.NumberFormat("uz-UZ").format(n);
+const categories=document.getElementById("categories");
+
+brands.forEach((brand,i)=>{
+  const b=document.createElement("button");
+  b.className="cat"+(i===0?" active":"");
+  b.textContent=brand;
+  b.onclick=()=>{
+    activeBrand=brand;
+    document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    renderProducts();
+  };
+  categories.appendChild(b);
+});
+
+function renderProducts(){
+  const search=document.getElementById("search").value.toLowerCase().trim();
+  let list=productsData.filter(p=>
+    (activeBrand==="Barchasi"||p.brand===activeBrand)&&
+    (p.name+" "+p.brand+" "+p.storage).toLowerCase().includes(search)
+  );
+  const sort=document.getElementById("sort").value;
+  if(sort==="low")list.sort((a,b)=>a.price-b.price);
+  if(sort==="high")list.sort((a,b)=>b.price-a.price);
+  if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
+
+  const area=document.getElementById("products");
+  area.innerHTML="";
+  if(!list.length){
+    area.innerHTML='<div class="empty">Bu qidiruv bo‘yicha telefon topilmadi.</div>';
+    return;
+  }
+  list.forEach(p=>{
+    const el=document.createElement("article");
+    el.className="product";
+    el.innerHTML=`
+      ${p.tag?`<span class="badge">${p.tag}</span>`:""}
+      <div class="product-img">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"
+          onerror="this.onerror=null;this.src='https://placehold.co/400x350/e9edf4/111827?text=Phone'">
+      </div>
+      <div class="product-info">
+        <span class="brand">${p.brand}</span>
+        <h3>${p.name}</h3>
+        <p class="spec">${p.storage} xotira · ${p.ram} RAM</p>
+        <div class="price">${money(p.price)} so‘m</div>
+        <div class="product-actions">
+          <button class="add" onclick="addToCart(${p.id})">+ Savatchaga</button>
+          <button class="details" onclick="showDetails(${p.id})">Batafsil</button>
+        </div>
+      </div>`;
+    area.appendChild(el);
+  });
+}
+
+function addToCart(id){
+  cart[id]=(cart[id]||0)+1;
+  updateCart();
+}
+function changeQty(id,delta){
+  cart[id]=(cart[id]||0)+delta;
+  if(cart[id]<=0)delete cart[id];
+  updateCart();
+}
+function updateCart(){
+  document.getElementById("cartCount").textContent=
+    Object.values(cart).reduce((a,b)=>a+b,0);
+  const area=document.getElementById("cartItems");
+  area.innerHTML="";
+  let total=0;
+  Object.keys(cart).forEach(key=>{
+    const p=productsData.find(x=>x.id===Number(key));
+    if(!p)return;
+    total+=p.price*cart[key];
+    const el=document.createElement("div");
+    el.className="cart-item";
+    el.innerHTML=`
+      <div><strong>${p.name}</strong>
+        <p>${money(p.price)} so‘m</p>
+        <div class="qty">
+          <button onclick="changeQty(${p.id},-1)">−</button>
+          <span>${cart[p.id]}</span>
+          <button onclick="changeQty(${p.id},1)">+</button>
+        </div>
+      </div>
+      <strong>${money(p.price*cart[p.id])}</strong>`;
+    area.appendChild(el);
+  });
+  if(!Object.keys(cart).length)area.innerHTML='<p class="note">Savatcha hozircha bo‘sh. Katalogdan telefon tanlang.</p>';
+  document.getElementById("total").textContent=money(total);
+}
+function openCart(){document.getElementById("cartPanel").classList.add("open")}
+function closeCart(){document.getElementById("cartPanel").classList.remove("open")}
+function showDetails(id){
+  const p=productsData.find(x=>x.id===id);
+  document.getElementById("detailContent").innerHTML=`
+    <img src="${p.img}" alt="${p.name}" style="width:100%;height:190px;object-fit:contain;background:#e9edf4;border-radius:12px"
+      onerror="this.src='https://placehold.co/400x250/e9edf4/111827?text=Phone'">
+    <h2>${p.name}</h2>
+    <p>Brend: ${p.brand}<br>Xotira: ${p.storage}<br>RAM: ${p.ram}</p>
+    <h3 style="margin:15px 0">${money(p.price)} so‘m</h3>
+    <button class="btn" onclick="addToCart(${p.id});detailDialog.close();openCart()">Savatchaga qo‘shish</button>`;
+  document.getElementById("detailDialog").showModal();
+}
+function showPopular(){
+  activeBrand="Barchasi";
+  document.getElementById("search").value="";
+  document.querySelectorAll(".cat").forEach((x,i)=>x.classList.toggle("active",i===0));
+  document.getElementById("sort").value="default";
+  renderProducts();
+  document.getElementById("catalog").scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("orderForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  if(!Object.keys(cart).length){
+    alert("Avval savatchaga telefon qo‘shing.");
+    return;
+  }
+  const data=new FormData(this);
+  const lines=Object.keys(cart).map(id=>{
+    const p=productsData.find(x=>x.id===Number(id));
+    return `${p.name} x ${cart[id]} = ${money(p.price*cart[id])} so'm`;
+  });
+  const message=`PHONEHUB BUYURTMASI\nIsm: ${data.get("name")}\nTelefon: ${data.get("phone")}\nManzil: ${data.get("address")}\n\nMahsulotlar:\n${lines.join("\n")}\n\nJami: ${document.getElementById("total").textContent} so'm`;
+  const w=window.open("","_blank");
+  if(w){
+    w.document.write("<title>Buyurtma</title><pre style='white-space:pre-wrap;font:16px Arial;padding:20px'></pre>");
+    w.document.querySelector("pre").textContent=message;
+  }else{
+    alert("Brauzer yangi oynani blokladi. Buyurtma ma'lumotlarini nusxalash uchun ruxsat bering.");
+  }
+  alert("Buyurtma matni tayyorlandi. Bu demo sayt: buyurtma do‘konga avtomatik yuborilmadi. Telegram bot yoki server ulash kerak.");
+});
+
+renderProducts();
+updateCart();
+</script>
+</body>
+</html>
